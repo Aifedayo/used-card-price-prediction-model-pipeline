@@ -54,6 +54,7 @@ class DataIngestionConfig:
     test_data_path: str = os.path.join('artifacts', 'test.csv')
     raw_data_path: str = os.path.join('artifacts', 'data.csv')
 
+
 class DataIngestion:
     def __init__(self):
         self.ingestion_config = DataIngestionConfig()
@@ -61,9 +62,11 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info('Entered the data ingestion method')
         try:
+            # Read the data as a csv file into df
             df = pd.read_csv('notebook/data/car_price_prediction.csv')
             logging.info('Read the datasets as a dataframe')
 
+            # Dataframe cleaning
             df.columns = df.columns.str.replace(' ', '_')
             df.Mileage = df.Mileage.apply(lambda x: x.split()[0])
             df.Engine_volume = df.Engine_volume.str.split(' ').str[0].astype(float)
