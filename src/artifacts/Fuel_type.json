@@ -1,0 +1,11 @@
+{
+    "Fuel_types": {
+        "CNG": 1,
+        "Hybrid": 2,
+        "LPG": 3,
+        "Petrol": 4,
+        "Hydrogen": 5,
+        "Plug-in Hybrid": 6,
+        "Diesel": 7
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "Categorys": {
+        "Limousine": 1,
+        "Hatchback": 2,
+        "Sedan": 3,
+        "Microbus": 4,
+        "Coupe": 5,
+        "Minivan": 6,
+        "Jeep": 7,
+        "Universal": 8,
+        "Cabriolet": 9,
+        "Pickup": 10,
+        "Goods wagon": 11
+    }
+}
