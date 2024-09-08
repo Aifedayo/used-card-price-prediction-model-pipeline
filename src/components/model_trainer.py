@@ -62,6 +62,14 @@ class ModelTrainer:
                     'params': {
                         'n_estimators': [150, 200]
                     }
+                },
+                'catboost_regressor': {
+                    'model': CatBoostRegressor(),
+                    'params': {
+                        'depth': [6,8,10],
+                        'learning_rate': [0.01, 0.05, 0.1],
+                        'iterations': [30, 50, 100]
+                    }
                 }
             }
 
@@ -105,6 +113,7 @@ class ModelTrainer:
             logging.info(f"R2 score for the best model on test set: {r2_square}")
 
             return r2_square
+    
 
         except Exception as e:
             raise CustomException(e, sys)
