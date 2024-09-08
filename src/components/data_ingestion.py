@@ -2,8 +2,10 @@ import os
 import sys
 import json
 import pandas as pd
+
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
+
 from src.exception import CustomException
 from src.logger import logging
 from src.components.data_transformation import DataTransformation
@@ -63,9 +65,10 @@ class DataIngestion:
 
     def initiate_data_ingestion(self):
         logging.info('Entered the data ingestion method')
+        logging.debug('debug logging is working')
         try:
             # Read the data as a csv file into df
-            df = pd.read_csv('notebook/data/car_price_prediction.csv')
+            df = pd.read_csv('src/notebook/data/car_price_prediction.csv')
             logging.info('Read the datasets as a dataframe')
 
             # Dataframe cleaning
