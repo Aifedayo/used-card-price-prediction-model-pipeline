@@ -1,39 +1,116 @@
-# Used Car Price Prediction Model Pipeline
-This repository contains a comprehensive machine-learning pipeline for predicting used car prices. The project involves data preprocessing, feature engineering, model training, and evaluation using advanced regression techniques. Key features include:
 
-- [x] Data Handling: In-depth data cleaning, outlier detection, and categorical encoding.
+# Used Car Price Prediction Model
 
-- [x] Feature Engineering: Customized feature extraction and transformation based on car attributes like Manufacturer, Model, Category, and more.
-- [x] Modeling: Implementing state-of-the-art models, including XGBoost and RandomForestRegressor, with hyperparameter tuning.
-- [x] Evaluation: Robust evaluation metrics and visualization for model performance comparison.
-- [x] Web Interface: An HTML-based form allowing users to input car details and predict prices in real-time.
+## Overview
 
-This pipeline is ideal for data enthusiasts, automotive analysts, and machine learning practitioners looking to explore predictive modeling in the automotive domain.
+This project involves building a machine learning model to predict the price of used cars. The pipeline includes data ingestion, preprocessing, model training, evaluation, and prediction. The models used in this project include linear regression, random forest, XGBoost, and CatBoost. The best model is selected based on cross-validated performance metrics and then saved for future predictions.
 
+## Project Structure
 
-## Data Ingestion Process
-The data_ingestion.py script is responsible for the initial step in the machine learning pipeline: ingesting and preparing the raw data for further processing. This script performs several crucial tasks, including:
+```
+├── src/
+│   ├── __init__.py
+│   ├── logger.py
+│   ├── exception.py
+│   ├── utils.py
+│   ├── server.py
+├── components/
+│   └── data_ingestion.py
+│   └── data_preprocessing.py
+│   └── model_trainer.py
+│   └── prediction.py
+├── artifacts/
+│   └── model.pkl
+|   └── preprocessor.pkl
+├── pipelinw/
+│   └── predict_pipeline.py
+|   └── train_pipeline.py
+├── notebooks/
+│   └── car_price_prediction_v2.ipynb
+├── data/
+│   └── car_price_prediction.csv
+├── README.md
+├── setup.py
+└── requirements.txt
+```
 
-- [x] Data Loading:
+## Installation
 
-The script begins by loading the raw dataset from a CSV file into a pandas DataFrame. The dataset is expected to contain various features related to car price prediction.
-### Data Cleaning:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/used-car-price-prediction.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd used-car-price-prediction
+   ```
+3. Create and activate a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
+4. Install the required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-- [x] Column Renaming: The columns are renamed to replace spaces with underscores for better readability and easier access.
-- [x] Mileage Cleaning: The Mileage column is stripped of any unit suffixes to retain only the numerical values.
-- [x] Engine Volume Conversion: The Engine_volume column, which contains both numerical values and units, is split to keep only the numerical part and convert it to a float.
+## How to Use
 
-### Data Conversion:
+### Data Ingestion
 
-The script includes a function (convert_cols_to_int) that converts specified columns to integer type after handling any missing values by imputing the mean.
-### Feature Engineering:
+The `data_ingestion.py` script is responsible for reading raw data, performing initial checks, and saving the processed data for model training.
 
-- [x] Encoding Categorical Variables: The categorical features such as Manufacturer, Model, Category, etc., are encoded using their mean price, and the mappings are saved as JSON files for reference.
-Outlier Removal: The script identifies and removes outliers from specific numerical columns (Mileage, Engine_volume, and Levy) based on their 5th and 95th percentiles.
+### Data Preprocessing
 
-### Data Splitting:
-The cleaned and processed data is split into training and testing sets using an 80/20 ratio. The resultant datasets are saved as CSV files in the artifacts directory.
+The `data_preprocessing.py` script handles the data cleaning, feature engineering, and splitting into training and test datasets. This step is critical as it ensures that the model receives properly formatted and relevant data.
 
-### Error Handling:
-Any exceptions during the ingestion process are captured and handled using a custom exception class, ensuring the script can log and report errors effectively.
+### Model Training
 
+The `model_trainer.py` script performs the following tasks:
+- It defines a configuration for model training.
+- Splits the training and test data.
+- Trains multiple models (e.g., Linear Regression, Random Forest, XGBoost, CatBoost) with cross-validation.
+- Evaluates the models using a custom `evaluate_models` function.
+- Selects the best model based on performance metrics.
+- Saves the trained model to the `artifacts` directory.
+
+### Prediction
+
+The `prediction.py` script can be used to make predictions on new data using the trained model. Simply load the data and run the prediction pipeline.
+
+### Logging
+
+Logging is implemented using the `logging` module and is configured in `logger.py`. All important events, such as data loading, model training, and errors, are logged for easy debugging and tracking.
+
+### Custom Exception Handling
+
+Custom exceptions are managed through the `exception.py` module, which wraps around the standard Python exceptions, providing more context and logging the error messages.
+
+## Example Workflow
+
+1. Run data ingestion:
+   ```bash
+   python src/data_ingestion.py
+   ```
+2. Run data preprocessing:
+   ```bash
+   python src/data_preprocessing.py
+   ```
+3. Train the model:
+   ```bash
+   python src/model_trainer.py
+   ```
+4. Make predictions:
+   ```bash
+   python src/prediction.py
+   ```
+
+## Results
+
+The model is evaluated using the R-squared metric on the test dataset. The best model and its performance metrics are saved in the `artifacts` directory.
+| Model_name | best_params | best_score |
+| ---------- | -----------| --------- |
+| linear_regression | {'n_jobs': 1}  |  0.443118 |
+| random_forest_reg   |         {'max_depth': 150, 'n_estimators': 200}   | 0.806956 |
+| xgb_regressor         |                     {'n_estimators': 200}  |  0.796459 |
+| catboost_regressor  | {'depth': 10, 'iterations': 100, 'learning_rat... |   0.779112 |
