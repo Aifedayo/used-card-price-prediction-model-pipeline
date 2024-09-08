@@ -83,3 +83,12 @@ def load_object(file_path):
 
     except Exception as e:
         raise CustomException(e, sys)
+
+
+def load_json_object(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            return pickle.load(file)
+
+    except Exception as e:
+        raise CustomException(e, sys)
