@@ -67,9 +67,15 @@ class DataTransformation:
             # Apply transformations on train and test data
             train_df[numeric_cols + leather_interior_cols] = preprocessing_obj.fit_transform(train_df[numeric_cols + leather_interior_cols])
             test_df[numeric_cols + leather_interior_cols] = preprocessing_obj.transform(test_df[numeric_cols + leather_interior_cols])
-
+            
             logging.info("Applied the preprocessing object on the training and testing dataframes.")
 
+            for col in train_df.select_dtypes(include=['object']).columns:
+                train_df[col] = train_df[col].astype('category')
+
+            for col in test_df.select_dtypes(include=['object']).columns:
+                test_df[col] = test_df[col].astype('category')
+            
             # Save the preprocessing object
             save_object(
                 file_path=self.data_transformation_config.preprocessor_obj_file_path,

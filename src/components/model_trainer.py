@@ -2,6 +2,9 @@ import os
 import sys
 from dataclasses import dataclass
 
+import pandas as pd
+import numpy as np
+
 from catboost import CatBoostRegressor
 from sklearn.ensemble import (
     AdaBoostRegressor,
@@ -17,82 +20,91 @@ from src.logger import logging
 
 from src.utils import save_object, evaluate_models, train_test_cross_validate
 
+
 @dataclass
 class ModelTrainerConfig:
-    trained_model_file_path=os.path.join("artifacts","model.pkl")
+    trained_model_file_path: str = os.path.join("artifacts", "model.pkl")
+
 
 class ModelTrainer:
     def __init__(self):
-        self.model_trainer_config=ModelTrainerConfig()
+        self.model_trainer_config = ModelTrainerConfig()
 
-
-    def initiate_model_trainer(self,train_array,test_array):
+    def initiate_model_trainer(self, train_array, test_array):
         try:
-            logging.info("Split training and test input data")
-            X_train, y_train = train_array.iloc[:, :-1], train_array.iloc[:, -1]
-            X_test, y_test = test_array.iloc[:, :-1], test_array.iloc[:, -1]
+            logging.info("Splitting training and test input data")
+
+            # Ensure that train_array and test_array are pandas DataFrames
+            if isinstance(train_array, np.ndarray):
+                train_array = pd.DataFrame(train_array)
+            if isinstance(test_array, np.ndarray):
+                test_array = pd.DataFrame(test_array)
+
+            X_train, y_train = train_array.iloc[:, 1:], train_array.iloc[:, 0]
+            X_test, y_test = test_array.iloc[:, 1:], test_array.iloc[:, 0]
 
             model_params = {
                 'linear_regression': {
                     'model': LinearRegression(),
                     'params': {
-                        'n_jobs': [5,10]
+                        'n_jobs': [1, 2, 5]
                     }
                 },
                 'random_forest_reg': {
                     'model': RandomForestRegressor(),
                     'params': {
                         'max_depth': [150],
-                        'n_estimators': [300],
+                        'n_estimators': [150, 200],
                     }
                 },
                 'xgb_regressor': {
                     'model': XGBRegressor(objective='reg:squarederror', enable_categorical=True),
                     'params': {
-                        'n_estimators': [200]
+                        'n_estimators': [150, 200]
                     }
                 }
             }
 
-            model_report:dict=evaluate_models(X_train, y_train)
-            
-            ## To get best model score from dict
-            best_model_score = max(sorted(model_report.values()))
+            additional_params = {
+                'X_train': X_train,
+                'y_train': y_train,
+                'X_test': X_test,
+                'y_test': y_test,
+                'cv': 10
+            }
 
-            
+            model_report: dict = evaluate_models(X_train, y_train, model_params)
+            print(model_report)
+            logging.info(f"Model evaluation report: {model_report}")
 
+            # Get the best model based on evaluation score
+            best_models = model_report.sort_values(by='best_score', ascending=False)
+            best_model = dict(best_models.iloc[0,:].items())
+            best_model_params = best_model['best_params']
 
-            if best_model_score<0.6:
-                raise CustomException("No best model found")
-            logging.info(f"Best found model on both training and testing dataset")
+            logging.info(f"Best model found: {best_model} with parameters: {best_model_params}")
+
+            # Re-instantiate the best model with the best found parameters
+            best_model_instance = model_params[best_model['model_name']]['model'].set_params(**best_model_params)
 
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
-                obj=best_model
+                obj=best_model_instance
             )
 
-            additional_params = {
-                'X_train' : X_train, 
-                'y_train' : y_train, 
-                'X_test' : X_test, 
-                'y_test': y_test, 
-                'cv':10
-            }
-            for model_name, model in models.items():
-                print(f'{model_name} Regression Model: ')
-                print()
+            # Train and cross-validate the best model
+            logging.info(f"Training and cross-validating the best model: {best_model}")
+            trained_model = train_test_cross_validate(best_model_instance, **additional_params)
 
-                trained_model = train_test_cross_validate(model, **additional_params)
+            logging.info(f"Best model trained: {trained_model}")
 
-                print(trained_model)
-
-
-
-
-            predicted=best_model.predict(X_test)
+            # Predictions and performance evaluation
+            predicted = best_model_instance.predict(X_test)
 
             r2_square = r2_score(y_test, predicted)
+            logging.info(f"R2 score for the best model on test set: {r2_square}")
+
             return r2_square
-            
+
         except Exception as e:
-            raise CustomException(e,sys)
+            raise CustomException(e, sys)

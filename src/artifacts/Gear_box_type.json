@@ -1,8 +1,8 @@
 {
     "Gear_box_types": {
-        "Variator": 1,
-        "Automatic": 2,
-        "Tiptronic": 3,
-        "Manual": 4
+        "Manual": 1,
+        "Variator": 2,
+        "Automatic": 3,
+        "Tiptronic": 4
     }
 }

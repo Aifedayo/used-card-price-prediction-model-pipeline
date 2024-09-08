@@ -93,12 +93,13 @@ class DataIngestion:
         df = drop_columns(df, cols_to_drop)
 
         df = get_and_remove_outliers('Mileage', df)
+        df = get_and_remove_outliers('Price', df=df)
         df = get_and_remove_outliers('Engine_volume', df)
         df = get_and_remove_outliers('Levy', df)
 
         cols_to_encode = ['Manufacturer', 'Model', 'Category', 'Gear_box_type', 'Fuel_type', 'Color', 'Drive_wheels']
         df = encoded_cols(df, cols_to_encode)
-        
+
         return df
 
     def split_data(self, df):
@@ -110,6 +111,7 @@ class DataIngestion:
             self.ingestion_config.train_data_path,
             self.ingestion_config.test_data_path
         )
+
 
 if __name__ == '__main__':
     obj = DataIngestion()
