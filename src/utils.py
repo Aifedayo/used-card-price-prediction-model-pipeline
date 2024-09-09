@@ -1,6 +1,7 @@
 import pickle
 import os
 import sys
+import json
 
 import pandas as pd
 import numpy as np
@@ -88,7 +89,21 @@ def load_object(file_path):
 def load_json_object(file_path):
     try:
         with open(file_path, 'r') as file:
-            return pickle.load(file)
+            return json.load(file)
 
     except Exception as e:
         raise CustomException(e, sys)
+
+
+def get_value_from_dict(value, dictionary, default_mean=True):
+    """
+    Helper function to get a value from a dictionary.
+    If the value is not found, it returns the mean of the dictionary values.
+    """
+    value = value.title()
+    result = dictionary.get(value, None)
+    
+    if result is None and default_mean:
+        result = np.mean(list(dictionary.values()))
+        
+    return result

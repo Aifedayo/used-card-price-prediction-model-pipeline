@@ -1,7 +1,7 @@
 import os
 import sys
 from dataclasses import dataclass
-
+import json
 import pandas as pd
 import numpy as np
 
@@ -43,6 +43,10 @@ class ModelTrainer:
             X_train, y_train = train_array.iloc[:, 1:], train_array.iloc[:, 0]
             X_test, y_test = test_array.iloc[:, 1:], test_array.iloc[:, 0]
 
+            columns = {'data_columns': [cols for cols in X_train.columns]}
+            with open('artifacts/columns.json', 'w') as file:
+                json.dump(columns, file, indent=4)
+
             model_params = {
                 'linear_regression': {
                     'model': LinearRegression(),
@@ -54,7 +58,7 @@ class ModelTrainer:
                     'model': RandomForestRegressor(),
                     'params': {
                         'max_depth': [150],
-                        'n_estimators': [150, 200],
+                        'n_estimators': [50, 100],
                     }
                 },
                 'xgb_regressor': {
@@ -63,14 +67,14 @@ class ModelTrainer:
                         'n_estimators': [150, 200]
                     }
                 },
-                'catboost_regressor': {
-                    'model': CatBoostRegressor(),
-                    'params': {
-                        'depth': [6,8,10],
-                        'learning_rate': [0.01, 0.05, 0.1],
-                        'iterations': [30, 50, 100]
-                    }
-                }
+                # 'catboost_regressor': {
+                #     'model': CatBoostRegressor(),
+                #     'params': {
+                #         'depth': [6,8,10],
+                #         'learning_rate': [0.01, 0.05, 0.1],
+                #         'iterations': [30, 50, 100]
+                #     }
+                # }
             }
 
             additional_params = {
@@ -82,7 +86,7 @@ class ModelTrainer:
             }
 
             model_report: dict = evaluate_models(X_train, y_train, model_params)
-            print(model_report)
+            
             logging.info(f"Model evaluation report: {model_report}")
 
             # Get the best model based on evaluation score
@@ -94,6 +98,9 @@ class ModelTrainer:
 
             # Re-instantiate the best model with the best found parameters
             best_model_instance = model_params[best_model['model_name']]['model'].set_params(**best_model_params)
+            
+            # Fit the model on the training data
+            best_model_instance.fit(X_train, y_train)
 
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,

@@ -1,0 +1,18 @@
+{
+    "data_columns": [
+        "Levy",
+        "Manufacturer",
+        "Model",
+        "Prod._year",
+        "Category",
+        "Leather_interior",
+        "Fuel_type",
+        "Engine_volume",
+        "Mileage",
+        "Cylinders",
+        "Gear_box_type",
+        "Drive_wheels",
+        "Color",
+        "Airbags"
+    ]
+}
