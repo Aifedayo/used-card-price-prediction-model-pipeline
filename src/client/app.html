@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Details Form</title>
+    <link rel="stylesheet" href="app.css">
+    <script src="app.js"></script>
+</head>
+<body>
+    <div class="form-container">
+        <form id="car-details-form">
+            <h2 class="title__heading">
+                Car Price Prediction Form v2
+            </h2>
+            <div class="form-group">
+                <label for="manufacturer">Manufacturer:</label>
+                <select id="manufacturer" name="manufacturer" required>
+                    <option value="" disabled="disabled" selected="selected">Select Manufacturer</option>
+                    <!-- Options will be dynamically populated -->
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="model">Model:</label>
+                <select id="model" name="model" required>
+                    <option value="">Select Model</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="">Select Category</option>
+                    <!-- Options will be dynamically populated -->
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="prod_year">Production Year:</label>
+                <select id="prod_year" name="prod_year" required>
+                    <option value="" selected="selected" disabled="disabled">Select Year</option>
+                    <!-- Generate years from 1999 to 2100 -->
+                <script>
+                    const yearSelect = document.getElementById("prod_year");
+                    for (let year = 1980; year <= 2050; year++) {
+                        yearSelect.innerHTML += `<option value="${year}">${year}</option>`;
+                    }
+                </script>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="mileage">Mileage:</label>
+                <input type="number" id="mileage" name="mileage" placeholder="Mileage Driven e.g 134500" required>
+            </div>
+            <div class="form-group">
+                <label for="levy">Levy:</label>
+                <input type="number" id="levy" name="levy" placeholder="e.g 1500" required>
+            </div>
+            <div class="form-group">
+                <label for="fuel_type">Fuel Type:</label>
+                <select id="fuel_type" name="fuel_type" required>
+                    <option value="">Select Fuel Type</option>
+                    <!-- Options will be dynamically populated -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="gear_box_type">Gear Box Type:</label>
+                <select id="gear_box_type" name="gear_box_type" required>
+                    <option value="" disabled="disabled">Select Gear Box Type</option>
+                    <!-- Options will be dynamically populated -->
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="color">Color:</label>
+                <select id="color" name="color" required>
+                    <option value="">Select Color</option>
+                    <!-- Options will be dynamically populated -->
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="engine_volume">Engine Volume:</label>
+                <input type="number" step="0.1" id="engine_volume" name="engine_volume" placeholder="e.g 3.5 Engine" required>
+            </div>
+            <div class="form-group">
+                <label for="drive_wheels">Drive Wheels:</label>
+                <select id="drive_wheels" name="drive_wheels" required>
+                    <option value="">Select Drive Wheels</option>
+                    <option value="rear">Rear-wheel Drive (RWD)</option>
+                    <option value="4X4">Four-Wheel Drive (4WD or 4X4)</option>
+                    <option value="front">Front-Wheel Drive (FWD)</option>
+                    <option value="AWD">All-Wheel Drive (AWD)</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="airbag">Airbags:</label>
+                <input type="number" id="airbag" name="airbag" placeholder="e.g 10">
+            </div>
+            <div class="form-group">
+                <label for="cylinder">Cylinders:</label>
+                <input type="number" id="cylinder" name="cylinder" placeholder="e.g 6" required>
+            </div>
+            <div class="form-group">
+                <label for="interior">Interior:</label>
+                <select id="interior" name="interior" required>
+                    <option value="">Select Interior</option>
+                    <option value="leather">Leather</option>
+                    <option value="fabric">Fabric</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Model Choice:</label>
+                <label><input type="radio" name="model_choice" value="model_xgb" required> XGBoostRegressor</label>
+                <label><input type="radio" name="model_choice" value="model_rfr" required> RandomForestRegressor</label>
+            </div>
+            <div class="form-group">
+                <button type="button" onclick="onClickEstimatePrice()">Submit Form</button>
+            </div>
+        </form>
+        <div id="predictionSection" class="price-container">
+            <h3>Estimated Price:</h3>
+            <p id="estimatedPrice">Please fill out the form to see the estimated price.</p>
+        </div>
+    </div>
+</body>
+</html>
