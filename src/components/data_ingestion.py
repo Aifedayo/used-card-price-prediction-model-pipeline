@@ -99,10 +99,10 @@ class DataIngestion:
         df = get_and_remove_outliers('Price', df=df)
         df = get_and_remove_outliers('Engine_volume', df)
         df = get_and_remove_outliers('Levy', df)
-        
+
         # Map all models to a specific manufacturer
         mapped_df = df.groupby('Manufacturer')['Model'].unique().apply(list).to_dict()
-        with open('artifacts/manufactures_to_models', 'w') as file:
+        with open('artifacts/manufactures_to_models.json', 'w') as file:
             json.dump(mapped_df, file, indent=4)
 
         cols_to_encode = ['Manufacturer', 'Model', 'Category', 'Gear_box_type', 'Fuel_type', 'Color', 'Drive_wheels']

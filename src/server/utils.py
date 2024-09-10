@@ -69,7 +69,7 @@ def load_artifacts():
 
     # Load model artifacts
     _artifacts['scaler'] = joblib.load('./artifacts/mileage_scaler.pkl')
-    _artifacts['model_rfr'] = joblib.load('./artifacts/model_rfr.pkl')
+    _artifacts['model_rfr'] = joblib.load('./artifacts/model.pkl')
 
 
 def predict_used_car_price(**kwargs):
@@ -126,10 +126,10 @@ def predict_used_car_price(**kwargs):
             x[13] = value
 
         elif key == 'model_choice':
-            model_choice = 'model_xgb' if value.lower() == 'model_xgb' else 'model_rfr'
+            model_choice = 'model_rfr'
     
     x_df = pd.DataFrame([x], columns=_artifacts['data_columns'])
-    print(f"Predicting with {'XGBoostRegressor' if model_choice == 'model_xgb' else 'RandomForestRegressor'}...")
+    print(f"Predicting with RandomForestRegressor: {model_choice == 'model_xgb'}")
     predicted_price = int(_artifacts[model_choice].predict(x_df)[0])
     return predicted_price
 
