@@ -3,7 +3,8 @@ from flask_cors import CORS
 
 import utils
 
-app = Flask(__name__)
+application = Flask(__name__)
+app = application
 CORS(app)
 
 @app.route('/object/<obj>/')
@@ -54,4 +55,4 @@ def predict():
 if __name__ == '__main__':
     print('Starting flask server for used car price prediction...')
     utils.load_artifacts()
-    app.run(debug=True)
+    app.run()
