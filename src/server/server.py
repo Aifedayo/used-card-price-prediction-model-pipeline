@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 
@@ -6,6 +7,10 @@ from src.server import utils
 application = Flask(__name__)
 app = application
 CORS(app)
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 @app.route('/')
 def index():
@@ -57,6 +62,6 @@ def predict():
         return jsonify({'error': 'Invalid content type, please send application/json'}), 400
     
 if __name__ == '__main__':
-    print('Starting flask server for used car price prediction...')
+    logger.info('Starting Flask server for used car price prediction...')
     utils.load_artifacts()
     app.run(debug=True)

@@ -45,7 +45,7 @@ async function onClickEstimatePrice() {
     };
     
     try {
-        const response = await fetch('http://localhost:5000/estimate-price', {
+        const response = await fetch('http://localhost:8000/estimate-price', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -92,11 +92,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     async function fetchManufacturers() {
-        const url = 'http://localhost:5000/object/manufacturers'
+        const url = 'http://localhost:8000/object/manufacturers'
         try {
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error('Netork response was not ok');
+                throw new Error('Network response was not ok');
             }
             const data = await response.json();
             if (data && data.objects) {
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function fetchModels(manufacturer) {
-        const url = 'http://localhost:5000/manufacturer/' + manufacturer
+        const url = 'http://localhost:8000/manufacturer/' + manufacturer
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function fetchCategories() {
-        const url = 'http://localhost:5000/object/categories';
+        const url = 'http://localhost:8000/object/categories';
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
 
     async function fetchColors() {
-        const url = 'http://localhost:5000/object/colors';
+        const url = 'http://localhost:8000/object/colors';
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     async function fetchGearBoxType() {
-        const url = 'http://localhost:5000/object/gear_boxes';
+        const url = 'http://localhost:8000/object/gear_boxes';
 
         try {
             const response = await fetch(url);
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function fetchFuelType() {
-        const url = 'http://localhost:5000/object/fuels';
+        const url = 'http://localhost:8000/object/fuels';
 
         try {
             const response = await fetch(url);

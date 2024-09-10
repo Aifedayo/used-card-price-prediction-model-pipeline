@@ -129,7 +129,7 @@ def predict_used_car_price(**kwargs):
             model_choice = 'model_rfr'
     
     x_df = pd.DataFrame([x], columns=_artifacts['data_columns'])
-    print(f"Predicting with RandomForestRegressor: {model_choice == 'model_xgb'}")
+    print(f"Predicting with RandomForestRegressor: {model_choice == 'model_rfr'}")
     predicted_price = int(_artifacts[model_choice].predict(x_df)[0])
     return predicted_price
 
