@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Details Form</title>
-    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
     <script src="app.js"></script>
 </head>
 <body>
@@ -126,5 +126,6 @@
             <p id="estimatedPrice">Please fill out the form to see the estimated price.</p>
         </div>
     </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

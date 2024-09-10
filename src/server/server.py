@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 
 import utils
@@ -6,6 +6,10 @@ import utils
 application = Flask(__name__)
 app = application
 CORS(app)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/object/<obj>/')
 def get_objects_list(obj):
@@ -55,4 +59,4 @@ def predict():
 if __name__ == '__main__':
     print('Starting flask server for used car price prediction...')
     utils.load_artifacts()
-    app.run()
+    app.run(debug=True)
