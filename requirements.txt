@@ -23,5 +23,4 @@ six==1.16.0
 tenacity==9.0.0
 threadpoolctl==3.5.0
 tzdata==2024.1
--e git+https://github.com/Aifedayo/used-card-price-prediction-model-pipeline.git@8c8a04b900b0975ba48ff1e8b72979c00de02c86#egg=used_car_price_prediction_model
 xgboost==2.1.1
