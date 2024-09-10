@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 
-import utils
+from src.server import utils
 
 application = Flask(__name__)
 app = application
