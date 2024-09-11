@@ -7,8 +7,10 @@ application = Flask(__name__)
 app = application
 CORS(app)
 
+
 @app.route('/object/<obj>/')
 def get_objects_list(obj):
+    utils.load_artifacts()
     objects_keys = utils.get_object_keys(obj)
     response = jsonify({
         'objects': objects_keys

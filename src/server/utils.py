@@ -27,13 +27,16 @@ _artifacts = {
 }
 
 def get_object_keys(obj):
+    load_artifacts()
     return _artifacts.get(obj, [])
 
 def get_exact_value(col_name, dict_name, key):
     """Returns the exact value from a nested dictionary, defaults to 0 if the key is not found."""
+    load_artifacts()
     return _artifacts.get(col_name, {}).get(dict_name, {}).get(key, 0)
 
 def get_manufacturer_models(manufacturer_name):
+    load_artifacts()
     manufacturer_name = manufacturer_name.upper()
     return _artifacts['manufacturers_to_models_columns'].get(manufacturer_name, [])
 
@@ -45,7 +48,6 @@ def load_json_artifact(filepath):
 def load_artifacts():
     """Loads all necessary artifacts for the model and assigns them to global variables."""
     global _artifacts
-    print('Loading artifacts...')
     
     # Load JSON artifacts
     _artifacts['manufacturers_columns'] = load_json_artifact('./artifacts/Manufacturer.json')
@@ -74,7 +76,7 @@ def load_artifacts():
 
 def predict_used_car_price(**kwargs):
     """Util function to predict the price of a used car."""
-    
+    load_artifacts()
     x = np.zeros(len(_artifacts['data_columns']))
     model_choice = ''
     for key, value in kwargs.items():

@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/object/<obj>/')
+@app.route('/api/object/<obj>/')
 def get_objects_list(obj):
     objects_keys = utils.get_object_keys(obj)
     response = jsonify({
@@ -25,7 +25,7 @@ def get_objects_list(obj):
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-@app.route('/column_name/<col_name>/dict_name/<dict_name>/key/<key>/')
+@app.route('/api/column_name/<col_name>/dict_name/<dict_name>/key/<key>/')
 def get_specific_objects_value(col_name, dict_name, key):
     object_value = utils.get_exact_value(col_name, dict_name, key)
     response = jsonify({
@@ -34,7 +34,7 @@ def get_specific_objects_value(col_name, dict_name, key):
     response.headers.add('Access-Content-Allow-Origin', '*')
     return response
 
-@app.route('/manufacturer/<manufacturer_name>/')
+@app.route('/api/manufacturer/<manufacturer_name>/')
 def fetch_manufacturer_models(manufacturer_name):
     manufacturer_list = utils.get_manufacturer_models(manufacturer_name)
     response = jsonify({
@@ -43,7 +43,7 @@ def fetch_manufacturer_models(manufacturer_name):
     response.headers.add('Access-Content-Allow-Origin', '*')
     return response
 
-@app.route('/estimate-price', methods=['POST'])
+@app.route('/api/estimate-price', methods=['POST'])
 def predict():
     if request.is_json:
         data = request.get_json()
@@ -64,4 +64,4 @@ def predict():
 if __name__ == '__main__':
     logger.info('Starting Flask server for used car price prediction...')
     utils.load_artifacts()
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
