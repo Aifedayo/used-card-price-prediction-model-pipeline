@@ -64,4 +64,4 @@ def predict():
 if __name__ == '__main__':
     logger.info('Starting Flask server for used car price prediction...')
     utils.load_artifacts()
-    app.run(debug=True, port=8000)
+    app.run(host="0.0.0.0", port=8080)
